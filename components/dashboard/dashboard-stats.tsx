@@ -50,7 +50,7 @@ export async function DashboardStats() {
             <Card>
                 <CardContent className="p-6 flex items-center justify-between">
                     <div>
-                        <p className="text-sm font-medium text-slate-500">Total Credits</p>
+                        <p className="text-sm font-medium text-slate-500">Credits Left</p>
                         <h4 className="text-3xl font-bold text-slate-900 mt-2">{credits}</h4>
                     </div>
                     <div className="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center">
@@ -62,7 +62,7 @@ export async function DashboardStats() {
             <Card>
                 <CardContent className="p-6 flex items-center justify-between">
                     <div>
-                        <p className="text-sm font-medium text-slate-500">Companies Found</p>
+                        <p className="text-sm font-medium text-slate-500">Total Leads</p>
                         <h4 className="text-3xl font-bold text-slate-900 mt-2">{totalCompanies}</h4>
                     </div>
                     <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center">
@@ -74,7 +74,7 @@ export async function DashboardStats() {
             <Card>
                 <CardContent className="p-6 flex items-center justify-between">
                     <div>
-                        <p className="text-sm font-medium text-slate-500">Latest Search</p>
+                        <p className="text-sm font-medium text-slate-500">Latest Region</p>
                         <h4 className="text-3xl font-bold text-slate-900 mt-2 truncate max-w-[150px]">{latestSearch}</h4>
                     </div>
                     <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">
