@@ -35,10 +35,12 @@ export async function updateSession(request: NextRequest) {
         data: { user },
     } = await supabase.auth.getUser()
 
+    // 3. Protect Dashboard
     if (request.nextUrl.pathname.startsWith('/dashboard') && !user) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
 
+    // 4. Redirect Logged-In Users from Root/Login to Dashboard
     if ((request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/') && user) {
         return NextResponse.redirect(new URL('/dashboard', request.url))
     }
