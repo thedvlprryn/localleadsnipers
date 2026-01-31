@@ -1,6 +1,7 @@
 import { SearchForm } from "@/components/dashboard/search-form"
 import { LeadsTable } from "@/components/dashboard/leads-table"
 import { DashboardStats } from "@/components/dashboard/dashboard-stats"
+import { TableSkeleton } from "@/components/dashboard/table-skeleton"
 import { Suspense } from "react"
 
 export default function SearchPage() {
@@ -20,7 +21,7 @@ export default function SearchPage() {
             <SearchForm />
 
             {/* Results Section */}
-            <Suspense fallback={<div className="h-64 bg-white rounded-xl border border-slate-200" />}>
+            <Suspense fallback={<TableSkeleton />}>
                 <LeadsTable />
             </Suspense>
         </div>
