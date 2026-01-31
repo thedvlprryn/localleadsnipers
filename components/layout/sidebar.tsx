@@ -1,9 +1,12 @@
 "use client"
 
-import { LayoutDashboard, Search, Megaphone, Settings, BarChart3, Database } from "lucide-react"
+import { LayoutDashboard, Search, Megaphone, Settings, BarChart3, Database, LogOut } from "lucide-react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { createClient } from "@/lib/supabase/client"
+import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
 
 const navItems = [
     { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
@@ -14,8 +17,25 @@ const navItems = [
     { icon: Settings, label: "Settings", href: "/dashboard/settings" },
 ]
 
-export function Sidebar() {
+interface SidebarProps {
+    userEmail?: string
+}
+
+export function Sidebar({ userEmail }: SidebarProps) {
     const pathname = usePathname()
+    const router = useRouter()
+    const supabase = createClient()
+
+    const handleLogout = async () => {
+        const { error } = await supabase.auth.signOut()
+        if (error) {
+            toast.error("Error logging out")
+        } else {
+            toast.success("Logged out successfully")
+            router.push("/")
+            router.refresh()
+        }
+    }
 
     return (
         <aside className="w-64 bg-white border-r border-slate-200 h-screen fixed left-0 top-0 flex flex-col z-30">
@@ -50,14 +70,19 @@ export function Sidebar() {
             </nav>
 
             <div className="p-4 border-t border-slate-100">
-                <div className="flex items-center gap-3 px-3 py-2">
-                    <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-medium text-sm">
-                        JD
+                <div className="flex items-center justify-between gap-2 px-3 py-2">
+                    <div className="flex items-center gap-3 overflow-hidden">
+                        <div className="w-8 h-8 rounded-full bg-indigo-100 flex-shrink-0 flex items-center justify-center text-indigo-600 font-medium text-sm">
+                            {userEmail?.charAt(0).toUpperCase() || "U"}
+                        </div>
+                        <div className="flex flex-col overflow-hidden">
+                            <span className="text-sm font-medium text-slate-900 truncate max-w-[100px]" title={userEmail}>{userEmail || "User"}</span>
+                            <span className="text-xs text-slate-500">Admin</span>
+                        </div>
                     </div>
-                    <div className="flex flex-col">
-                        <span className="text-sm font-medium text-slate-900">John Doe</span>
-                        <span className="text-xs text-slate-500">Admin</span>
-                    </div>
+                    <Button variant="ghost" size="icon" onClick={handleLogout} className="h-8 w-8 text-slate-400 hover:text-red-600 hover:bg-red-50">
+                        <LogOut className="w-4 h-4" />
+                    </Button>
                 </div>
             </div>
         </aside>
