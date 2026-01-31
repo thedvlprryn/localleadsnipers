@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LocalLeadSnipers | B2B Lead Generation",
-  description: "Enterprise-grade B2B lead generation dashboard",
+  title: "LocalLeadSnipers | B2B Lead Automation",
+  description: "Find verified local business leads in seconds. The #1 Tool for Agencies.",
 };
 
 export default function RootLayout({
