@@ -40,12 +40,12 @@ export function Sidebar({ userEmail }: SidebarProps) {
     return (
         <aside className="w-64 bg-white border-r border-slate-200 h-screen fixed left-0 top-0 flex flex-col z-30">
             <div className="h-16 flex items-center px-6 border-b border-slate-100">
-                <div className="flex items-center gap-2">
+                <Link href="/dashboard" className="flex items-center gap-2">
                     <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
                         <span className="text-white font-bold text-lg">L</span>
                     </div>
                     <span className="text-lg font-bold text-slate-900 tracking-tight">LocalLeadSnipers</span>
-                </div>
+                </Link>
             </div>
 
             <nav className="flex-1 p-4 space-y-1 overflow-y-auto mt-2">
