@@ -25,7 +25,7 @@ export default function LoginPage() {
 
         try {
             if (isSignUp) {
-                const { error } = await supabase.auth.signUp({
+                const { data, error } = await supabase.auth.signUp({
                     email,
                     password,
                     options: {
@@ -33,7 +33,14 @@ export default function LoginPage() {
                     },
                 })
                 if (error) throw error
-                toast.success("Check your email to confirm your account")
+
+                if (data.session) {
+                    toast.success("Account created successfully")
+                    router.refresh()
+                    router.push("/dashboard")
+                } else {
+                    toast.success("Check your email to confirm your account")
+                }
             } else {
                 const { error } = await supabase.auth.signInWithPassword({
                     email,
