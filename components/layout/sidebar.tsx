@@ -44,7 +44,7 @@ export function Sidebar({ userEmail }: SidebarProps) {
                     <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
                         <span className="text-white font-bold text-lg">L</span>
                     </div>
-                    <span className="text-lg font-bold text-slate-900 tracking-tight">LocalLeadSnipers</span>
+                    <span className="text-lg font-bold text-slate-900 tracking-tight">LeadAim</span>
                 </Link>
             </div>
 

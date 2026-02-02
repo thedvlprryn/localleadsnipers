@@ -1,29 +1,28 @@
 import { SearchForm } from "@/components/dashboard/search-form"
-import { LeadsTable } from "@/components/dashboard/leads-table"
-import { DashboardStats } from "@/components/dashboard/dashboard-stats"
-import { TableSkeleton } from "@/components/dashboard/table-skeleton"
-import { Suspense } from "react"
+import { EmptyState } from "@/components/ui/empty-state"
+import { Search } from "lucide-react"
 
 export default function SearchPage() {
     return (
-        <div className="space-y-8">
-            <div>
-                <h1 className="text-2xl font-bold text-slate-900">Lead Search</h1>
-                <p className="text-slate-500 mt-1">Find and manage your local business leads.</p>
+        <div className="flex flex-col items-center justify-center min-h-[60vh] max-w-4xl mx-auto space-y-12">
+            <div className="text-center space-y-4">
+                <h1 className="text-4xl font-bold text-slate-900 tracking-tight">
+                    Find your next <span className="text-indigo-600">big client</span>.
+                </h1>
+                <p className="text-lg text-slate-500 max-w-2xl mx-auto">
+                    Search through millions of verified local businesses to find your ideal prospects in seconds.
+                </p>
             </div>
 
-            {/* Analytics Section */}
-            <Suspense fallback={<div className="h-32 bg-slate-100 rounded-xl animate-pulse" />}>
-                <DashboardStats />
-            </Suspense>
-
-            {/* Search Section */}
             <SearchForm />
 
-            {/* Results Section */}
-            <Suspense fallback={<TableSkeleton />}>
-                <LeadsTable />
-            </Suspense>
+            <div className="w-full max-w-sm mx-auto opacity-50">
+                {/* 
+                  Using the EmptyState purely as a visual placeholder here if needed, 
+                  but typically this page starts "empty". 
+                  We can put a placeholder graphic below.
+                */}
+            </div>
         </div>
     )
 }
