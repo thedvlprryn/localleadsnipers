@@ -6,8 +6,10 @@
 }
 
 body {
-  background-color: #F8FAFC; /* slate-50 */
-  color: #0F172A; /* slate-900 */
+  background-color: #F8FAFC;
+  /* slate-50 */
+  color: #0F172A;
+  /* slate-900 */
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

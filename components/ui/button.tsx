@@ -24,7 +24,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                     size === "icon" && "p-2 rounded-lg",
                     // Color variants
                     variant === "primary" && "bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm border border-transparent",
-                    variant === "secondary" && "bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 shadow-sm",
+                    variant === "secondary" && "bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 shadow-sm",
                     variant === "outline" && "bg-transparent text-slate-700 border border-slate-200 hover:bg-slate-50",
                     variant === "ghost" && "bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900",
                     variant === "danger" && "bg-red-600 text-white hover:bg-red-700 shadow-sm",
