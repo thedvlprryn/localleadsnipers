@@ -3,65 +3,58 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const token = request.headers.get('authorization')?.split(' ')[1];
 
-        console.log("[Proxy] Received search request");
-        console.log("[Proxy] Token present:", !!token);
+        // 1. Validate environment variable
+        const n8nUrl = process.env.N8N_WEBHOOK_URL || process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL;
 
-        if (!token) {
-            // console.log("[Proxy] No token provided");
-            // return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        if (!n8nUrl) {
+            console.error("Proxy Error: Missing n8n URL");
+            return NextResponse.json(
+                { success: false, message: "Server Configuration Error: Missing n8n URL" },
+                { status: 500 }
+            );
         }
 
-        // Use server-side env var first, fallback to public if needed (though webhook should be secret ideally)
-        const webhookUrl = process.env.N8N_WEBHOOK_URL || process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL;
+        // 2. Forward Request to n8n (Server-to-Server)
+        console.log(`[Proxy] Forwarding request to: ${n8nUrl}`);
+        const authHeader = request.headers.get('authorization');
 
-        console.log("[Proxy] Webhook URL Configured:", !!webhookUrl);
-        // console.log("[Proxy] Target:", webhookUrl); // Uncomment for debugging only (don't expose logs in prod)
-
-        if (!webhookUrl) {
-            console.error('[Proxy] Error: N8N_WEBHOOK_URL is missing in environment variables');
-            return NextResponse.json({
-                error: 'Server Configuration Error',
-                message: 'Search service is not configured.'
-            }, { status: 500 });
+        if (!authHeader) {
+            console.error("[Proxy] Missing Authorization header");
+            return NextResponse.json(
+                { success: false, message: "Unauthorized: Missing Authorization Header" },
+                { status: 401 }
+            );
         }
 
-        console.log("[Proxy] Forwarding to n8n...");
-        const response = await fetch(webhookUrl, {
+        const response = await fetch(n8nUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': authHeader
             },
-            body: JSON.stringify(body),
+            body: JSON.stringify(body)
         });
 
-        console.log("[Proxy] n8n Response Status:", response.status);
-
+        // 3. Handle n8n Response
         if (!response.ok) {
-            console.error(`[Proxy] Upstream failed with ${response.status}: ${response.statusText}`);
+            console.error(`[Proxy] Upstream error: ${response.status} ${response.statusText}`);
+            const text = await response.text();
             return NextResponse.json(
-                { error: `Upstream Error: ${response.status}`, details: await response.text() },
+                { success: false, message: `Upstream Error: ${response.status}`, details: text },
                 { status: response.status }
             );
         }
 
-        // Safely handle response body (might be empty or text)
-        const textData = await response.text();
-        let data;
-        try {
-            data = textData ? JSON.parse(textData) : {};
-        } catch (e) {
-            console.log("[Proxy] Response was not JSON:", textData);
-            data = { message: "Search initiated successfully", raw: textData };
-        }
-
-        console.log("[Proxy] Success data:", data);
-        return NextResponse.json(data);
+        const data = await response.json();
+        console.log("[Proxy] Data received from n8n");
+        return NextResponse.json(data, { status: 200 });
 
     } catch (error) {
-        console.error('[Proxy] Internal Error:', error);
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+        console.error("Proxy Error:", error);
+        return NextResponse.json(
+            { success: false, message: "Failed to connect to search engine." },
+            { status: 500 }
+        );
     }
 }

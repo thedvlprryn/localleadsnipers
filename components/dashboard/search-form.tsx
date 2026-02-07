@@ -57,7 +57,7 @@ export function SearchForm() {
 
             const token = session.access_token
 
-            const response = await fetch("/api/search", {
+            const response = await fetch("/api/n8n/search", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -66,8 +66,10 @@ export function SearchForm() {
                 body: JSON.stringify({ keyword, city }),
             })
 
-            if (response.status === 401) {
-                toast.error("Session expired or unauthorized.")
+            if (response.status === 401 || response.status === 403) {
+                toast.error("Your session has timed out. Please refresh the page.")
+                // Optional: redirect to login if session is truly invalid, but user might just need refresh
+                // router.push("/login") 
                 return
             }
 
